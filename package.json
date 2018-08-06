@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "autoit": "^1.1.9",
+    "ffi": "^2.2.0",
+    "firebase": "^5.3.1",
     "iohook": "^0.2.0",
-    "memoryjs": "^3.0.0",
-    "robotjs": "^0.5.1"
+    "ref": "^1.3.5"
   }
 }

@@ -1,0 +1,69 @@
+{
+  "_from": "autoit",
+  "_id": "autoit@1.1.9",
+  "_inBundle": false,
+  "_integrity": "sha1-N4QoGbCwYwus2hp29a3owX1OjtA=",
+  "_location": "/autoit",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "autoit",
+    "name": "autoit",
+    "escapedName": "autoit",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/autoit/-/autoit-1.1.9.tgz",
+  "_shasum": "37842819b0b0630bacda1a76f5ade8c17d4e8ed0",
+  "_spec": "autoit",
+  "_where": "D:\\development\\projects\\mu-bot",
+  "author": {
+    "name": "xhawk18",
+    "email": "xhawk18@gmail.com",
+    "url": "https://github.com/xhawk18"
+  },
+  "bugs": {
+    "url": "https://github.com/xhawk18/node-autoit/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "ffi": ">=2.0.0",
+    "iconv-lite": ">=0.4.11",
+    "ref": ">=1.2.0",
+    "ref-struct": ">=1.0.2"
+  },
+  "deprecated": false,
+  "description": "nodejs autoit(x) wrapper",
+  "devDependencies": {},
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "index.js",
+    "wchar.js",
+    "test.js",
+    "AutoItX3.dll",
+    "AutoItX3_x64.dll",
+    "AutoItX3_DLL.h"
+  ],
+  "homepage": "https://github.com/xhawk18/node-autoit#readme",
+  "keywords": [
+    "autoit",
+    "nodejs",
+    "ffi"
+  ],
+  "license": "MIT",
+  "name": "autoit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xhawk18/node-autoit.git"
+  },
+  "scripts": {},
+  "version": "1.1.9"
+}

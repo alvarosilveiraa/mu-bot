@@ -1,0 +1,62 @@
+{
+  "_from": "memoryjs@^3.0.0",
+  "_id": "memoryjs@3.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-c2tZnMFCw9xFy6TNBT8/dPUGTAZ0bIGMgFzjl8STi4dwBilvSlNSbUeWMMOIxVQz9RoVilf+VM4tWmJAzhWSlg==",
+  "_location": "/memoryjs",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "memoryjs@^3.0.0",
+    "name": "memoryjs",
+    "escapedName": "memoryjs",
+    "rawSpec": "^3.0.0",
+    "saveSpec": null,
+    "fetchSpec": "^3.0.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/memoryjs/-/memoryjs-3.0.0.tgz",
+  "_shasum": "b3c40e3b05db247d1b1f782a13dafc008c588ffe",
+  "_spec": "memoryjs@^3.0.0",
+  "_where": "D:\\development\\projects\\mu-bot",
+  "author": {
+    "name": "Rob--"
+  },
+  "bugs": {
+    "url": "https://github.com/Rob--/memoryjs/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "eslint": "^4.18.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  },
+  "deprecated": false,
+  "description": "Node add-on for memory reading and writing!",
+  "gypfile": true,
+  "homepage": "https://github.com/Rob--/memoryjs#readme",
+  "keywords": [
+    "memory",
+    "reading",
+    "writing",
+    "management",
+    "addon"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "memoryjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rob--/memoryjs.git"
+  },
+  "scripts": {
+    "build32": "node-gyp clean configure build --arch=ia32",
+    "build64": "node-gyp clean configure build --arch=x64",
+    "install": "node-gyp rebuild",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "3.0.0"
+}

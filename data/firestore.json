@@ -1,0 +1,34 @@
+{
+  "Bino-PC": {
+    "YouDEAD": {
+      "started": false,
+      "deaths": 0,
+      "map": 37,
+      "coordinate": [
+        153,
+        14
+      ],
+      "spot": {
+        "map": 37,
+        "coordinate": [
+          153,
+          14
+        ],
+        "events": [
+          {
+            "type": "keyboard",
+            "key": "m",
+            "delay": 400
+          },
+          {
+            "type": "mouseclick",
+            "button": "left",
+            "x": 1015,
+            "y": 310,
+            "delay": 1333
+          }
+        ]
+      }
+    }
+  }
+}
