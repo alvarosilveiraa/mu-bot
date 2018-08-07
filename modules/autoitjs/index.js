@@ -1,5 +1,3 @@
-'use strict';
-
 var ref = require('ref');
 var ffi = require('ffi');
 var path = require('path');
@@ -1546,22 +1544,22 @@ $.Game = {
   mouseclick: event => {
     return new Promise(resolve => {
       $.MouseMove(event.x, event.y);
-      if(e.button === 0) $.MouseDown('right');
+      if(event.button === 0) $.MouseDown('right');
       else $.MouseDown('left');
       setTimeout(() => {
-        if(e.button === 0) $.MouseUp('right');
+        if(event.button === 0) $.MouseUp('right');
         else $.MouseUp('left');
       }, 200);
       setTimeout(resolve, event.delay || 400);
     });
   },
-  keyboard: key => {
+  keyboard: event => {
     return new Promise(resolve => {
-    $.Send(`{${key} down}`);
+      $.Send(`{${event.key} down}`);
       setTimeout(() => {
-        $.Send(`{${key} up}`);
-        resolve();
+        $.Send(`{${event.key} up}`);
       }, 300);
+      setTimeout(resolve, event.delay || 400);
     });
   }
 }

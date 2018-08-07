@@ -1,28 +1,52 @@
-'use strict';
-
 const autoitjs = require('./modules/autoitjs');
 const memoryjs = require('./modules/memoryjs');
 const { isInCoordinate } = require('./util/geolocation');
+const readInput = require('./util/readInput');
+const sleep = require('./util/sleep');
 
-module.exports = (db, char) => {
-  // AUTOITJS
-  autoitjs.Init();
-  const HANDLE = autoitjs.WinGetHandle('PvP MuOnline');
-  const CONTROL = autoitjs.ControlGetHandle(HANDLE, '');
-  const WINDOW_POSITION = autoitjs.WinGetPos(HANDLE);
-  autoitjs.ControlFocus(HANDLE, CONTROL);
+autoitjs.Init();
 
-  // MEMORYJS
-  const OBJECT = memoryjs.openProcess('main.exe');
+const windowFocus = handle => {
+  const active = autoitjs.WinActive(handle);
+  if(!active) autoitjs.WinActivate(handle);
+}
+
+const checkProcess = async (winList) => {
+  const processes = winList.map(win => {
+    const PID = autoitjs.WinGetProcess(win.handle);
+    return {
+      PID,
+      ...win
+    }
+  });
+  const index = await readInput(`Selecione a janela que irá executar o bot:\n\n${processes.map((p, i) => i + ' - ' + p.PID).join('\n')}\n\n> `);
+  const selected = processes[index];
+  windowFocus(selected.handle);
+  const confirm = await readInput('Confirmar janela? [y/n]\n\n> ');
+  if(confirm === 'n' || confirm === 'N')
+    return await checkProcess(winList);
+  return { ...selected };
+}
+
+module.exports = async (db, char) => {
+  const DEATH_LOOP = 10;
+  const WINDOW_LIST = await autoitjs.WinList('PvP MuOnline');
+  const WINDOW_SELECTED = await checkProcess(WINDOW_LIST);
+  const WINDOW_POSITION = autoitjs.WinGetPos(WINDOW_SELECTED.handle);
+  const OBJECT = memoryjs.openProcess(WINDOW_SELECTED.PID);
+  windowFocus(WINDOW_SELECTED.handle);
 
   let map = null;
   let coordinate = [];
   let lastCoordinate = [];
   let equal = 0;
 
-  const updateMap = () => map = memoryjs.readMemory(OBJECT.handle, 0x00E61E18, memoryjs.INT);
+  const updateMap = async () => {
+    map = memoryjs.readMemory(OBJECT.handle, 0x00E61E18, memoryjs.INT);
+    await db.update({ map });
+  }
 
-  const updateCoordinate = () => {
+  const updateCoordinate = async () => {
     coordinate = [
       memoryjs.readMemory(OBJECT.handle, 0x081C038C, memoryjs.INT),
       memoryjs.readMemory(OBJECT.handle, 0x081C0388, memoryjs.INT)
@@ -30,14 +54,15 @@ module.exports = (db, char) => {
     if(
       lastCoordinate[0] === coordinate[0] &&
       lastCoordinate[1] === coordinate[1] &&
-      equal < 6
+      equal < DEATH_LOOP + 1
     ) equal++;
     else equal = 0;
     lastCoordinate = coordinate;
+    await db.update({ coordinate });
   }
 
   const goToMove = async () => {
-    if(map === char.spot.map)
+    if(map == char.spot.map)
       await sleep(4000);
   }
 
@@ -50,30 +75,24 @@ module.exports = (db, char) => {
   }
 
   const initialize = async () => {
-    if(equal >= 5) {
+    if(equal >= DEATH_LOOP) {
       const { top, left, right, bottom } = WINDOW_POSITION;
       const x = left + (right - left) / 2;
-      const y = top + (bottom - top) / 2;
-      autoitjs.Game.mouseClick({ coordinate: [x, y - 40] });
+      const y = (top + (bottom - top) / 2) - 40;
+      windowFocus(WINDOW_SELECTED.handle);
+      autoitjs.Game.mouseclick({ x, y });
     }
-    updateMap();
-    updateCoordinate();
-    if(map !== char.spot.map || !isInCoordinate(coordinate, map.spot.coordinate)) {
+    await updateMap();
+    await updateCoordinate();
+    if(map != char.spot.map || !isInCoordinate(coordinate, char.spot.coordinate, 6)) {
+      windowFocus(WINDOW_SELECTED.handle);
       await goToMove();
       await goToSpot();
-      initialize();
-    }else setTimeout(initialize, 4000);
+    }
+    await sleep(4000);
+    initialize();
   }
-  // initialize();
-
-  autoitjs.WinList('npm')
-    .then(list => {
-      const processes = list.map(win => {
-        const PID = autoitjs.WinGetProcess(win.handle);
-        return {
-          PID,
-          ...win
-        }
-      });
-    }).catch(err => console.log(err));
+  console.log('\x1Bc');
+  console.log('### BOT STARTED ###');
+  initialize();
 }

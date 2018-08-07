@@ -13,5 +13,4 @@ Next
 
 _ArrayAdd($list, "")
 
-;~ MsgBox(1, "", _ArrayToString($list))
 ConsoleWrite(_ArrayToString($list) & @CRLF)

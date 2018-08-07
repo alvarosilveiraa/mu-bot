@@ -1,3 +1,5 @@
+'use strict';
+
 const ioHook = require('iohook');
 
 const CHAR_CODES = {
@@ -27,7 +29,6 @@ const CHAR_CODES = {
   45: 'X',
   21: 'Y',
   44: 'Z',
-
   28: 'ENTER'
 }
 
@@ -46,13 +47,22 @@ const startListener = () => {
     const now = new Date().getTime();
     delay = now - time;
     time = now;
-    events.push({ ...event, delay, key: CHAR_CODES[event.keycode], type: 'keyboard' });
+    const key = CHAR_CODES[event.keycode];
+    if(key) {
+      events.push({
+        ...event,
+        delay,
+        key,
+        type: 'keyboard'
+      });
+    }
   });
   ioHook.start();
 }
 
 const stopListener = () => {
   ioHook.stop();
+  ioHook.unload();
   return events;
 }
 
@@ -60,5 +70,3 @@ module.exports = {
   startListener,
   stopListener
 }
-
-

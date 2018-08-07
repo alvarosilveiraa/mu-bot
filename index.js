@@ -1,8 +1,4 @@
-'use strict';
-
-const bot = require('./bot');
 const readInput = require('./util/readInput');
-const hardware = require('./util/hardware');
 const firebase = require('firebase');
 firebase.initializeApp({
   apiKey: "AIzaSyAr6yca2FCz22I_9ORGhIkHXyjf9s-jOqM",
@@ -16,11 +12,13 @@ const firestore = firebase.firestore();
 firestore.settings({ timestampsInSnapshots: true });
 
 const listenEvents = async (db) => {
+  const hardware = require('./modules/hardware');
   await readInput('Configure sua ida ao spot (pressione enter)...');
   hardware.startListener();
   await readInput('Terminar configuração (pressione enter)...');
   const events = hardware.stopListener();
   await db.update({ 'spot.events': events });
+  process.exit();
 }
 
 const startBot = async () => {
@@ -32,9 +30,11 @@ const startBot = async () => {
     const data = char.data();
     if(data.spot.events.length) {
       const option = await readInput('Escolha uma das opções:\n\n1 - Iniciar última configuração de ida ao spot\n2 - Criar nova configuração de ida ao spot\n\n> ');
-      if(option === '2') await listenEvents(db);
+      if(option === '1') {
+        const bot = require('./bot');
+        bot(db, data);
+      }else if(option === '2') await listenEvents(db);
     }else await listenEvents(db);
-    bot(db, data);
   }else initialize();
 }
 
